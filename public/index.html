@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Chat</title>
+
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+
+    <!-- Bibliotecas do Angular.js -->
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+
+    <!-- Bibliotecas do Firebase -->
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/5.4.2/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/5.4.2/firebase-auth.js"></script>
+    <script defer src="/__/firebase/5.4.2/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/5.4.2/firebase-storage.js"></script>
+
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-app.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCWU1AWcMEHCbevhe_69PAdnV25Cwn9GEA",
+        authDomain: "my-chat-5f8dd.firebaseapp.com",
+        databaseURL: "https://my-chat-5f8dd.firebaseio.com",
+        projectId: "my-chat-5f8dd",
+        storageBucket: "my-chat-5f8dd.appspot.com",
+        messagingSenderId: "65617405984"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+    <!-- Bibliotecas para o cloud firestore -->
+    <script defer src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+
+    <!-- Your application bootstrap  -->
+    <script type="text/javascript">
+      /**
+       * You must include the dependency on 'ngMaterial'
+       */
+       // é necessário injetar o firebase no app
+      angular.module('BlankApp', ['ngMaterial', 'ngMessages']);
+    </script>
+
+    <!-- controllers -->
+    <script defer src="scripts/main.controller.js" charset="utf-8"></script>
+
+  </head>
+  <body ng-app="BlankApp" ng-controller="mainCtrl as m" ng-cloak>
+
+    <!-- Cabeçalho da página -->
+    <md-toolbar class="md-hue-1">
+      <div class="md-toolbar-tools">
+        <h2 md-truncate>My Chat</h2>
+
+        <span flex></span>
+
+        <!-- Dados do usuário -->
+        <img ng-show="m.loggedIn" ng-src="{{m.user.photo}}" alt="sua foto"
+        width="50" height="50" style="border-radius: 40px; margin-right: 3px;">
+        <span ng-show="m.loggedIn">{{ m.user.nome }}</span>
+
+        <!-- Botão para fazer logout -->
+        <md-button ng-show="m.loggedIn" ng-click="m.logout()">
+          Sair
+        </md-button>
+
+        <!-- Botão para fazer login -->
+        <md-button ng-show="!m.loggedIn" ng-click="m.autenticar()">
+          Entrar com Google
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <!-- Container das mensagens  -->
+    <md-card flex-offset="30" flex="40">
+      <md-card-content>
+        <!-- Mensagens -->
+        <md-list>
+          <md-list-item ng-repeat="msg in m.mensagens"></md-list-item>
+        </md-list>
+      </md-card-content>
+
+      <!-- Footer do container. Input e botão -->
+      <md-card-footer>
+        <md-input-container>
+          <label for="mensagem">Mensagem...</label>
+          <input type="text" name="mensagem" value="" ng-model="m.msg">
+        </md-input-container>
+
+        <md-button class="md-raised" ng-disabled="m.msg === ''" ng-click="m.send()">
+          Send
+        </md-button>
+      </md-card-footer>
+    </md-card>
+  </body>
+</html>

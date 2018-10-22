@@ -16,7 +16,8 @@ function mainCtrl($scope) {
   self.initFirebase = function() {
     // atalhos para auth e firestore
     self.auth = firebase.auth();
-    self.db = firebase.firestore();
+    // self.db = firebase.firestore();
+    self.db = firebase.database();
 
     // listener para quando o estado de autenticação mudar
     self.auth.onAuthStateChanged(self.onAuthStateChanged.bind(this));
@@ -60,15 +61,25 @@ function mainCtrl($scope) {
   // Salvar uma mensagem
   self.send = function() {
     console.log('salvando...');
-    
-    self.db.collection('mensagens').add({
+
+    var key = self.db.ref().child('mensagens').push().key;
+
+    self.db.ref('mensagens/' + key).set({
       nome: self.user.nome,
       photoURL: self.user.photo,
       texto: self.msg
-    }).then(function() {
-      console.log('enviado');
-      self.msg = "";
-    }).catch(e => console.error('Erro ao enviar uma mensagem: ', e));
+    }).then(function () {
+      console.log('enviado');      
+    }).catch(e => console.error('Erro ao enviar mensagem: ', e));
+    
+    // self.db.collection('mensagens').add({
+    //   nome: self.user.nome,
+    //   photoURL: self.user.photo,
+    //   texto: self.msg
+    // }).then(function() {
+    //   console.log('enviado');
+    //   self.msg = "";
+    // }).catch(e => console.error('Erro ao enviar uma mensagem: ', e));
   }
 
   self.initFirebase();

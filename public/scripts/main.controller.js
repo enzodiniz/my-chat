@@ -69,9 +69,9 @@ function mainCtrl($scope) {
       photoURL: self.user.photo,
       texto: self.msg
     }).then(function () {
-      console.log('enviado');      
+      console.log('enviado');
     }).catch(e => console.error('Erro ao enviar mensagem: ', e));
-    
+
     // self.db.collection('mensagens').add({
     //   nome: self.user.nome,
     //   photoURL: self.user.photo,
